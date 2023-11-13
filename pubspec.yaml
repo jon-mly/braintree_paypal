@@ -1,6 +1,6 @@
 name: braintree_paypal
 description: A new Flutter project.
-version: 0.0.1
+version: 0.0.2
 #homepage:
 
 environment:
@@ -43,7 +43,7 @@ flutter:
         pluginClass: BraintreePaypalPlugin
       web:
         pluginClass: BraintreePaypalWeb
-        fileName: braintree_paypal_web.dart
+        fileName: platform/braintree_paypal_web.dart
 
   # To add assets to your plugin package, add an assets section, like this:
   # assets:

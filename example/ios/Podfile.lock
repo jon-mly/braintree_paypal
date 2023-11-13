@@ -13,6 +13,7 @@ PODS:
     - Braintree/DataCollector
   - braintree_paypal (0.0.1):
     - Braintree (~> 6.8.0)
+    - Braintree/DataCollector (~> 6.8.0)
     - Flutter
   - Flutter (1.0.0)
   - integration_test (0.0.1):
@@ -37,7 +38,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   Braintree: 24290aedd83a1936e4f24b3d32fb6bf70625c5a8
-  braintree_paypal: b61268fd8769fd37fc00d13f5c78242578849093
+  braintree_paypal: 1bde979413b8db94d033c885e23db829da69adcb
   Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
   integration_test: 13825b8a9334a850581300559b8839134b124670
 

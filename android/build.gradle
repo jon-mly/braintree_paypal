@@ -46,7 +46,7 @@ android {
     }
 
     defaultConfig {
-        minSdkVersion 21
+        minSdkVersion 23
     }
 
     dependencies {
@@ -68,7 +68,9 @@ android {
 }
 
 dependencies {
-    implementation 'com.braintreepayments.api:drop-in:6.13.0'
+//    implementation 'com.braintreepayments.api:drop-in:6.13.0'
+    implementation 'com.braintreepayments.api:card:4.39.0'
     implementation 'com.braintreepayments.api:paypal:4.39.0'
+    implementation 'com.braintreepayments.api:data-collector:4.39.0'
     implementation 'androidx.appcompat:appcompat:1.6.1'
 }

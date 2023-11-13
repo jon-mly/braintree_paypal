@@ -10,7 +10,17 @@ Minimum target iOS 14
 
 #### Android:
 
-Minimum SDK 21
+Minimum SDK 23
+
+Add in your app's `android/app/build.gradle` :
+
+    android {
+        ...
+        defaultConfig {
+            minSdkVersion 23
+            ...
+        }
+    }
 
 ## Setup
 
@@ -23,6 +33,7 @@ No further step.
 To use this plugin in your Android app, you need to update your AndroidManifest.xml. Add the following snippet inside the <application> tag:
 
     <activity android:name="dev.jonmlk.braintree_paypal.BraintreePaypalActivity"
+        android:theme="@style/Theme.AppCompat.Light"
         android:exported="true">
         <intent-filter>
             <action android:name="android.intent.action.VIEW" />

@@ -8,6 +8,7 @@ import com.braintreepayments.api.Card
 import com.braintreepayments.api.CardClient
 import com.braintreepayments.api.CardNonce
 import com.braintreepayments.api.CardTokenizeCallback
+import com.braintreepayments.api.DataCollector
 import com.braintreepayments.api.PayPalAccountNonce
 import com.braintreepayments.api.PayPalCheckoutRequest
 import com.braintreepayments.api.PayPalClient
@@ -17,7 +18,7 @@ import com.braintreepayments.api.PaymentMethodNonce
 import com.braintreepayments.api.UserCanceledException
 
 
-public open class BraintreePaypalActivity: AppCompatActivity(), PayPalListener {
+open class BraintreePaypalActivity : AppCompatActivity(), PayPalListener {
 
     private var braintreeClient: BraintreeClient? = null
 
@@ -35,6 +36,8 @@ public open class BraintreePaypalActivity: AppCompatActivity(), PayPalListener {
                 tokenizeCreditCard()
             } else if (type == "requestPaypalNonce") {
                 requestPaypalNonce()
+            } else if (type == "getDeviceData") {
+                getDeviceData()
             } else {
                 throw Exception("Invalid request type: $type")
             }
@@ -52,19 +55,19 @@ public open class BraintreePaypalActivity: AppCompatActivity(), PayPalListener {
         intent = newIntent
     }
 
-    override fun onStart() {
-        super.onStart()
-    }
-
-    override fun onResume() {
-        super.onResume()
-    }
-
     //
     // Actions
     //
 
-    protected fun tokenizeCreditCard() {
+    private fun getDeviceData() {
+        val dataCollector = DataCollector(braintreeClient!!)
+        dataCollector.collectDeviceData(this) { deviceData, error ->
+            error?.let { onError(it) }
+            deviceData?.let { onDeviceDataReturned(it) }
+        }
+    }
+
+    private fun tokenizeCreditCard() {
         val intent = intent
         val card = Card()
         card.expirationMonth = intent.getStringExtra("expirationMonth")
@@ -80,7 +83,7 @@ public open class BraintreePaypalActivity: AppCompatActivity(), PayPalListener {
         cardClient.tokenize(card, callback)
     }
 
-    protected fun requestPaypalNonce() {
+    private fun requestPaypalNonce() {
         val payPalClient = PayPalClient(this, braintreeClient!!)
         payPalClient.setListener(this)
 
@@ -104,19 +107,25 @@ public open class BraintreePaypalActivity: AppCompatActivity(), PayPalListener {
     // Callbacks
     //
 
+    private fun onDeviceDataReturned(deviceData: String) {
+        val result = Intent()
+        result.putExtra("type", "deviceData")
+        result.putExtra("deviceData", deviceData)
+        setResult(RESULT_OK, result)
+        finish()
+    }
+
     private fun onPaymentMethodNonceCreated(paymentMethodNonce: PaymentMethodNonce) {
         val nonceMap = HashMap<String, Any?>()
         nonceMap["nonce"] = paymentMethodNonce.string
         nonceMap["isDefault"] = paymentMethodNonce.isDefault
         if (paymentMethodNonce is PayPalAccountNonce) {
-            val paypalAccountNonce = paymentMethodNonce
-            nonceMap["paypalPayerId"] = paypalAccountNonce.payerId
+            nonceMap["paypalPayerId"] = paymentMethodNonce.payerId
             nonceMap["typeLabel"] = "PayPal"
-            nonceMap["description"] = paypalAccountNonce.email
+            nonceMap["description"] = paymentMethodNonce.email
         } else if (paymentMethodNonce is CardNonce) {
-            val cardNonce = paymentMethodNonce
-            nonceMap["typeLabel"] = cardNonce.cardType
-            nonceMap["description"] = "ending in ••" + cardNonce.lastTwo
+            nonceMap["typeLabel"] = paymentMethodNonce.cardType
+            nonceMap["description"] = "ending in ••" + paymentMethodNonce.lastTwo
         }
         val result = Intent()
         result.putExtra("type", "paymentMethodNonce")

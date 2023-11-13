@@ -16,6 +16,7 @@ A new Flutter project.
   s.source_files = 'Classes/**/*'
   s.dependency 'Flutter'
   s.dependency 'Braintree', '~> 6.8.0'
+  s.dependency 'Braintree/DataCollector', '~> 6.8.0'
   s.platform = :ios, '14.0'
 
   # Flutter.framework does not contain a i386 slice.

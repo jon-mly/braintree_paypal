@@ -35,4 +35,10 @@ class BraintreePaypalWeb extends BraintreePaypalPlatform {
     // TODO: implement requestPaypalNonce
     throw UnimplementedError();
   }
+
+  @override
+  Future getDeviceData(Map<String, dynamic> parameters) {
+    // TODO: implement getDeviceData
+    throw UnimplementedError();
+  }
 }

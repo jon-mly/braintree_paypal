@@ -23,12 +23,8 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
+  // TODO: replace with your sandbox tokenization key
   static const String tokenizationKey = 'sandbox_8hxpnkht_kzdtzv2btm4p7s5j';
-
-  @override
-  void initState() {
-    super.initState();
-  }
 
   void showNonce(BraintreePaymentMethodNonce nonce) {
     showDialog(
@@ -44,6 +40,22 @@ class _MainPageState extends State<MainPage> {
             Text('Type label: ${nonce.typeLabel}'),
             const SizedBox(height: 16),
             Text('Description: ${nonce.description}'),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void showDeviceData(String deviceData) {
+    showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+        title: const Text('Device data:'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            Text(deviceData),
           ],
         ),
       ),
@@ -96,8 +108,10 @@ class _MainPageState extends State<MainPage> {
             ),
             ElevatedButton(
               onPressed: () async {
-                final request = BraintreePayPalRequest(amount: '13.37');
-                final result = await BraintreePaypal.requestPaypalNonce(
+                final BraintreePayPalRequest request =
+                    BraintreePayPalRequest(amount: '13.37');
+                final BraintreePaymentMethodNonce? result =
+                    await BraintreePaypal.requestPaypalNonce(
                   tokenizationKey,
                   request,
                 );
@@ -106,6 +120,16 @@ class _MainPageState extends State<MainPage> {
                 }
               },
               child: const Text('PAYPAL CHECKOUT FLOW'),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                final String? deviceData =
+                    await BraintreePaypal.getDeviceData(tokenizationKey);
+                if (deviceData != null) {
+                  showDeviceData(deviceData);
+                }
+              },
+              child: const Text('GET DEVICE DATA'),
             ),
           ],
         ),

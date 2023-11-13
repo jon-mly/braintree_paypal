@@ -23,11 +23,9 @@ abstract class BraintreePaypalPlatform extends PlatformInterface {
     _instance = instance;
   }
 
-  Future<String?> getPlatformVersion() {
-    throw UnimplementedError('platformVersion() has not been implemented.');
-  }
-
   Future<dynamic> tokenizeCreditCard(Map<String, dynamic> parameters);
 
   Future<dynamic> requestPaypalNonce(Map<String, dynamic> parameters);
+
+  Future<dynamic> getDeviceData(Map<String, dynamic> parameters);
 }

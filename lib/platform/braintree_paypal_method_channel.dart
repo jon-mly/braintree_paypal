@@ -10,12 +10,6 @@ class MethodChannelBraintreePaypal extends BraintreePaypalPlatform {
   final methodChannel = const MethodChannel('braintree_paypal');
 
   @override
-  Future<String?> getPlatformVersion() async {
-    final version = await methodChannel.invokeMethod<String>('getPlatformVersion');
-    return version;
-  }
-
-  @override
   Future<dynamic> tokenizeCreditCard(Map<String, dynamic> parameters) {
     return methodChannel.invokeMethod("tokenizeCreditCard", parameters);
   }
@@ -23,5 +17,10 @@ class MethodChannelBraintreePaypal extends BraintreePaypalPlatform {
   @override
   Future requestPaypalNonce(Map<String, dynamic> parameters) {
     return methodChannel.invokeMethod("requestPaypalNonce", parameters);
+  }
+
+  @override
+  Future getDeviceData(Map<String, dynamic> parameters) {
+    return methodChannel.invokeMethod("getDeviceData", parameters);
   }
 }

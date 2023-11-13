@@ -32,12 +32,14 @@ public class BraintreePaypalPlugin: NSObject, FlutterPlugin {
 
           if let client = BTAPIClient(authorization: authorization) {
               switch call.method {
-                  case "tokenizeCreditCard":
-                  tokenizeCreditCard(using: client, request: requestInfo, result: result)
-                  case "requestPaypalNonce":
-                      requestPaypalNonce(using: client, request: requestInfo, result: result)
-                  default:
-                    result(FlutterMethodNotImplemented)
+              case "getDeviceData":
+                  getDeviceData(using: client, result: result)
+              case "tokenizeCreditCard":
+                tokenizeCreditCard(using: client, request: requestInfo, result: result)
+              case "requestPaypalNonce":
+                  requestPaypalNonce(using: client, request: requestInfo, result: result)
+              default:
+                result(FlutterMethodNotImplemented)
               }
           } else {
                 result(FlutterMethodNotImplemented)
@@ -47,6 +49,17 @@ public class BraintreePaypalPlugin: NSObject, FlutterPlugin {
     //
     // Actions
     //
+
+    private func getDeviceData(using client: BTAPIClient, result: @escaping FlutterResult) {
+        let dataCollector = BTDataCollector(apiClient: client)
+        dataCollector.collectDeviceData { deviceDataString, error in
+            if let deviceDataString = deviceDataString {
+                result(deviceDataString)
+            } else {
+                result(FlutterError(code: "braintree_no_device_data", message: error?.localizedDescription, details: nil))
+            }
+        }
+    }
 
     private func tokenizeCreditCard(using client: BTAPIClient, request: [String: Any],  result: @escaping FlutterResult) {
         let cardClient = BTCardClient(apiClient: client)
