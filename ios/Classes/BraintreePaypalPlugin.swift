@@ -42,7 +42,7 @@ public class BraintreePaypalPlugin: NSObject, FlutterPlugin {
                 result(FlutterMethodNotImplemented)
               }
           } else {
-                result(FlutterMethodNotImplemented)
+                result(FlutterError(code: "braintree_client_not_configured", message: error?.localizedDescription, details: nil))
           }
       }
 
