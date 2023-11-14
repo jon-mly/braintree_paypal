@@ -42,7 +42,7 @@ public class BraintreePaypalPlugin: NSObject, FlutterPlugin {
                 result(FlutterMethodNotImplemented)
               }
           } else {
-                result(FlutterError(code: "braintree_client_not_configured", message: error?.localizedDescription, details: nil))
+                result(FlutterError(code: "braintree_client_not_configured", message: "API Client could not be created. Check that the authorization key is valid and correctly configured", details: nil))
           }
       }
 
